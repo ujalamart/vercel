@@ -1,36 +1,152 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+// Each panel exported separately
 
-## Getting Started
+// Admin Panel
+export function AdminPanel() {
+  return (
+    <div className="p-4">
+      <h2 className="text-xl font-bold mb-2">Admin Dashboard</h2>
+      <ul className="list-disc ml-6 text-sm">
+        <li>Manage users and their roles</li>
+        <li>Oversee platform sales and commissions</li>
+        <li>View analytics and performance metrics</li>
+        <li>Manage product categories</li>
+        <li>Control site-wide announcements and offers</li>
+        <li>Monitor support and AI assistant logs</li>
+      </ul>
+    </div>
+  );
+}
 
-First, run the development server:
+// Seller Panel
+export function SellerPanel() {
+  return (
+    <div className="p-4">
+      <h2 className="text-xl font-bold mb-2">Seller Panel</h2>
+      <ul className="list-disc ml-6 text-sm">
+        <li>Upload and manage products</li>
+        <li>Track orders and update inventory</li>
+        <li>View earnings and payout status</li>
+        <li>Promote products with ads</li>
+        <li>Respond to customer queries</li>
+        <li>Upload product demo videos</li>
+      </ul>
+    </div>
+  );
+}
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+// Delivery Panel
+export function DeliveryPanel() {
+  return (
+    <div className="p-4">
+      <h2 className="text-xl font-bold mb-2">Delivery Dashboard</h2>
+      <ul className="list-disc ml-6 text-sm">
+        <li>View assigned orders</li>
+        <li>Update delivery status in real-time</li>
+        <li>Access maps and navigation tools</li>
+        <li>Get delivery history and performance</li>
+        <li>Chat with support and admin</li>
+      </ul>
+    </div>
+  );
+}
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+// User Panel
+export function UserPanel({ search, setSearch, cart, addToCart, products }) {
+  const filtered = products.filter(p => p.name.toLowerCase().includes(search.toLowerCase()));
+  const categories = ["All", "Fashion", "Kitchen", "Accessories", "Home Decor"];
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-4">
+        <input
+          placeholder="Search for products..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-2/3 p-2 border rounded"
+        />
+        <span className="ml-4">Cart: {cart.length}</span>
+      </div>
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+      <Tabs defaultValue="All" className="mb-4">
+        <TabsList>
+          {categories.map(cat => (
+            <TabsTrigger key={cat} value={cat}>{cat}</TabsTrigger>
+          ))}
+        </TabsList>
+        {categories.map(category => (
+          <TabsContent key={category} value={category}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {filtered
+                .filter(p => category === "All" || p.category === category)
+                .map((product) => (
+                  <Card key={product.id}>
+                    <CardContent className="p-2">
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-40 object-cover rounded-xl mb-2"
+                      />
+                      <div className="text-lg font-semibold">{product.name}</div>
+                      <div className="text-green-600 font-medium mb-2">{product.price}</div>
+                      <Button onClick={() => addToCart(product)}>Add to Cart</Button>
+                    </CardContent>
+                  </Card>
+                ))}
+            </div>
+          </TabsContent>
+        ))}
+      </Tabs>
 
-## Learn More
+      <div className="mt-6">
+        <h2 className="text-xl font-bold mb-2">AI Chat Assistant</h2>
+        <p className="text-sm mb-4">Ask anything about our products or your order. Our AI will help you instantly!</p>
+        <Input placeholder="Ask a question..." className="mb-2" />
+        <Button>Send</Button>
+      </div>
 
-To learn more about Next.js, take a look at the following resources:
+      <div className="mt-6">
+        <h2 className="text-xl font-bold mb-2">Video Messages</h2>
+        <p className="text-sm mb-4">Watch product demos and updates via video messages</p>
+        <video controls className="w-full rounded-xl">
+          <source src="/sample-video.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  );
+}
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+// Gold Panel
+export function GoldPanel() {
+  return (
+    <div className="p-4">
+      <h2 className="text-xl font-bold mb-2">Gold Membership Features</h2>
+      <ul className="list-disc ml-6 text-sm">
+        <li>Free delivery on all products</li>
+        <li>Exclusive early access to sales</li>
+        <li>Gold badge on your profile</li>
+        <li>Special discounts up to 15%</li>
+        <li>Access to monthly gold-only deals</li>
+        <li>Video product previews</li>
+      </ul>
+    </div>
+  );
+}
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+// Premium Panel
+export function PremiumPanel() {
+  return (
+    <div className="p-4">
+      <h2 className="text-xl font-bold mb-2">Premium Membership Features</h2>
+      <ul className="list-disc ml-6 text-sm">
+        <li>All Gold features included</li>
+        <li>24x7 priority customer support</li>
+        <li>Premium-only mega sales</li>
+        <li>Exclusive premium gift boxes</li>
+        <li>Birthday & festival special surprises</li>
+        <li>Early access to AI shopping assistant and video help</li>
+      </ul>
+    </div>
+  );
+}
+ 
